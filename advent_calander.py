@@ -1,4 +1,4 @@
-import os
+from utils import read_from_file, grid_modification, list_to_string
 
 movements = [(-1, -1),
              (-1, 0),
@@ -23,15 +23,9 @@ movements = [(-1, -1),
 #     ['M','X','M','X','A','X','M','A','S','X']
 # ]
 
-keyword = "XMAS"
+keyword: str = "XMAS"
+grid: list[list[str]] = read_from_file('grid.txt')
 
-if os.path.isfile('grid.txt'):
-    with open('grid.txt', 'r') as file:
-        grid = [list(line.strip()) for line in file.readlines()]
-
-rows = len(grid)
-cols = len(grid[0])
-len_of_keyword = len(keyword)
 visited_coordinates = []
 number_of_words_found = 0
 
@@ -41,12 +35,12 @@ for row_index, row in enumerate(grid):
             for i, j in movements:
                 whole_word = []
                 word_coordinates = []
-                for k in range(len_of_keyword):
 
+                for k in range(len(keyword)):
                     new_row = row_index + k * i
                     new_col = column_index + k * j
 
-                    if 0 <= new_row < rows and 0 <= new_col < cols and grid[new_row][new_col] == keyword[k]:
+                    if 0 <= new_row < len(grid) and 0 <= new_col < len(grid[0]) and grid[new_row][new_col] == keyword[k]:
                         whole_word.append(grid[new_row][new_col])
                         word_coordinates.append((new_row, new_col))
 
@@ -54,13 +48,6 @@ for row_index, row in enumerate(grid):
                     visited_coordinates.extend(word_coordinates)
                     number_of_words_found += 1
 
-for row_index, row in enumerate(grid):
-    for column_index, column in enumerate(row):
-        if (row_index, column_index) not in visited_coordinates:
-            grid[row_index][column_index] = '*'
-
-print("Modified grid with unmatched letters marked:")
-for row in grid:
-    print(''.join(row))
+list_to_string(grid_modification(grid, visited_coordinates))
 
 print(f"Total occurrences of the keyword '{keyword}': {number_of_words_found}")
