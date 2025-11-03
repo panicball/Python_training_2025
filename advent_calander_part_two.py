@@ -21,7 +21,6 @@ grid: list[list[str]] = read_from_file('grid.txt')
 
 visited_coordinates = []
 number_of_words_found = 0
-normal_and_reverse_coordinates = []
 
 for row_index, row in enumerate(grid):
     for column_index, column in enumerate(row):
@@ -58,3 +57,4 @@ for row_index, row in enumerate(grid):
 list_to_string(grid_modification(grid, visited_coordinates))
 
 print(f"Total occurrences of the keyword '{keyword}': {number_of_words_found/2}")
+
